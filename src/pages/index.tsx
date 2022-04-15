@@ -1,9 +1,8 @@
 import type { GetStaticProps, NextPage } from 'next'
-import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 
 type Props = {
-  now: string;
+  now: string
   data: { title: string }
 }
 
@@ -20,11 +19,13 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
 const Page: NextPage<Props> = ({ now, data }) => {
   return (
-    <div className={styles.container}>
+    <div>
       <h1>{now}</h1>
       <h2>{data.title}</h2>
       <hr />
-      <Link href='/users'><a>users</a></Link>
+      <Link href="/users">
+        <a>users</a>
+      </Link>
     </div>
   )
 }
