@@ -15,7 +15,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
       httpOnly: true,
     })
   }
-  ctx.res.setHeader('Cache-Control', 'no-store')
+  ctx.res.setHeader(
+    'Cache-Control',
+    'no-cache, no-store, max-age=0, must-revalidate'
+  )
   return { props: { now } }
 }
 
