@@ -25,7 +25,11 @@ const Page: NextPage<Props> = ({ user }) => {
       onSubmit={(event) => {
         event.preventDefault()
         const body = JSON.stringify({ name, email })
-        fetch(`/api/users/${user.id}`, { method: 'PUT', body })
+        fetch(`/api/users/${user.id}`, {
+          method: 'PUT',
+          body,
+          headers: { 'Content-Type': 'application/json' },
+        })
           .then((res) => res.json())
           .then(({ user }: { user: User }) => {
             router.push(`/users/${user.id}`)

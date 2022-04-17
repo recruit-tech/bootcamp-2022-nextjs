@@ -14,10 +14,14 @@ const Page: NextPage = () => {
         // [3] 保持した入力値を stringify し、body を作成
         const body = JSON.stringify({ name, email })
         // [4] /pages/api/users に、POST リクエストを送る
-        fetch('/api/users', { method: 'POST', body })
+        fetch('/api/users', {
+          method: 'POST',
+          body,
+          headers: { 'Content-Type': 'application/json' },
+        })
           .then((res) => res.json())
           .then(({ user }: { user: User }) => {
-            // [11] 作成成功した場合、ユーザー詳細画面に遷移する
+            // [10] 作成成功した場合、ユーザー詳細画面に遷移する
             router.push(`/users/${user.id}`)
           })
           .catch((err) => {
