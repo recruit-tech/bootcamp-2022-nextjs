@@ -25,9 +25,10 @@ const Page: NextPage<Props> = (props) => {
     <div>
       <h1>User</h1>
       {/* 課題３：ユーザー詳細を表示してみて */}
-      <p>{props.now}</p>
       <h2>{props.user.name}</h2>
       <h4>{props.user.email}</h4>
+      <hr />
+      <p>{props.now}</p>
     </div>
   )
 }
