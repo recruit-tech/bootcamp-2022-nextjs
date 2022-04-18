@@ -10,6 +10,8 @@ type Props = {
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const now = new Date().toISOString()
   const users = await prisma.user.findMany()
+  await new Promise(resolve => { setTimeout(resolve, 1000) })
+  ctx.res.setHeader('Cache-Control', 'max-age=10')
   return { props: { users, now } }
 }
 
