@@ -8,15 +8,15 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   console.log(req.query)
+  const id = req.query.id
+  if (typeof id != 'string') {
+    res.status(400).json({ err: 'error' })
+    return
+  }
+  const idNumber: number = +id
   switch (req.method) {
     case 'PUT':
       // 課題４：req.query から id を取得し、PrismaClient でユーザーを更新してみて
-      const id = req.query.id
-      if (typeof id != 'string') {
-        res.status(400).json({ err: 'error' })
-        return
-      }
-      const idNumber: number = +id
       prisma.user
         .update({
           where: {
@@ -36,7 +36,17 @@ export default async function handler(
       break
     case 'DELETE':
       // 課題５：req.query から id を取得し、PrismaClient でユーザーを物理削除してみて
-      res.status(501).json({ err: 'Not Implemented' })
+      prisma.user.delete({
+        where: {
+          id: idNumber
+        }
+      })
+      .then(() => {
+        res.status(200).end()
+      })
+      .catch(() => {
+        res.status(500).json({ err: 'error' })
+      })
       break
     default:
       res.status(405).json({ err: 'Method Not Allowed' })

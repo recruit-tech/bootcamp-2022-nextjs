@@ -1,5 +1,6 @@
 import { prisma, User } from '@/prisma'
-import type { GetServerSideProps, NextPage } from 'next'
+import type { GetServerSideProps, NextPage, NextComponentType } from 'next'
+import { useRouter } from 'next/router'
 
 type Props = {
   user: User
@@ -20,6 +21,27 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   return { props: { user, now } }
 }
 
+const DeleteButton: React.FC<Props> = (props) => {
+  const router = useRouter()
+  return (
+    <button onClick={() => {
+      fetch(`/api/users/${props.user.id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      })
+      .then(() => {
+        router.push(`/users`)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    }
+    }>
+      Delete
+    </button>
+  )
+}
+
 const Page: NextPage<Props> = (props) => {
   return (
     <div>
@@ -27,6 +49,7 @@ const Page: NextPage<Props> = (props) => {
       {/* 課題３：ユーザー詳細を表示してみて */}
       <h2>{props.user.name}</h2>
       <h4>{props.user.email}</h4>
+      <DeleteButton {...props}></DeleteButton>
       <hr />
       <p>{props.now}</p>
     </div>
