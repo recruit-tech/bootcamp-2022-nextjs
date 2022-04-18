@@ -1,5 +1,6 @@
 import { prisma, User } from '@/prisma'
 import type { GetServerSideProps, NextPage, NextComponentType } from 'next'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 type Props = {
@@ -49,6 +50,9 @@ const Page: NextPage<Props> = (props) => {
       {/* 課題３：ユーザー詳細を表示してみて */}
       <h2>{props.user.name}</h2>
       <h4>{props.user.email}</h4>
+      <Link href={`/users/${props.user.id}/edit`}>
+        編集する
+      </Link>
       <DeleteButton {...props}></DeleteButton>
       <hr />
       <p>{props.now}</p>
