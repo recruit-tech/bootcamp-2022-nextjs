@@ -1,4 +1,4 @@
-import { User } from '@/prisma'
+import { prisma, User } from '@/prisma'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 type Data = { user: User } | { err: string }
@@ -11,7 +11,28 @@ export default async function handler(
   switch (req.method) {
     case 'PUT':
       // 課題４：req.query から id を取得し、PrismaClient でユーザーを更新してみて
-      res.status(501).json({ err: 'Not Implemented' })
+      const id = req.query.id
+      if (typeof id != 'string') {
+        res.status(400).json({ err: 'error' })
+        return
+      }
+      const idNumber: number = +id
+      prisma.user
+        .update({
+          where: {
+            id: idNumber
+          },
+          data: {
+            name: req.body.name,
+            email: req.body.email
+          }
+        })
+        .then((user) => {
+          res.status(200).json({ user })
+        })
+        .catch(() => {
+          res.status(500).json({ err: 'error' })
+        })
       break
     case 'DELETE':
       // 課題５：req.query から id を取得し、PrismaClient でユーザーを物理削除してみて
