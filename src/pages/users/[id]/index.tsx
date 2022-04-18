@@ -9,8 +9,14 @@ type Props = {
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const now = new Date().toISOString()
   // 課題１：エラー「オブジェクトは 'undefined' である可能性があります」を消すには？
+  if (!ctx.params || typeof ctx.params.id !== 'string') {
+    throw new Error('400')
+  }
   const user = await prisma.user.findUnique({ where: { id: +ctx.params.id } })
   // 課題２：const user: User | null の推論を、const user: User にするためには？
+  if (!user) {
+    throw new Error('404')
+  }
   return { props: { user, now } }
 }
 
